@@ -1,0 +1,7 @@
+name = "ab-to-padh-le-api"
+main = "worker/index.js"
+compatibility_date = "2026-06-04"
+
+[[kv_namespaces]]
+binding = "USERS_DB"
+id = "ee864caa2db0439d90a090a5d8423e9e"

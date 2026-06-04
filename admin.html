@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>God Mode | Ab To Padh Le</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    :root,
+    [data-bs-theme="dark"] {
+      --bg-main: #09090b;
+      --glass-panel: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-hover: rgba(255, 255, 255, 0.06);
+      --accent-blue: #3b82f6;
+      --accent-green: #10b981;
+      --text-main: #f8fafc;
+      --text-muted: #a1a1aa;
+      --grid-color: rgba(255, 255, 255, 0.1);
+      --input-bg: rgba(0, 0, 0, 0.3);
+      --btn-glass-bg: rgba(255, 255, 255, 0.05);
+      --btn-glass-hover: rgba(255, 255, 255, 0.1);
+      --btn-primary-bg: rgba(255, 255, 255, 0.9);
+      --btn-primary-text: #000;
+    }
+
+    [data-bs-theme="light"] {
+      --bg-main: #f4f4f5;
+      --glass-panel: rgba(255, 255, 255, 0.7);
+      --glass-border: rgba(0, 0, 0, 0.08);
+      --glass-hover: rgba(255, 255, 255, 0.9);
+      --accent-blue: #2563eb;
+      --accent-green: #059669;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --grid-color: rgba(0, 0, 0, 0.06);
+      --input-bg: rgba(255, 255, 255, 0.8);
+      --btn-glass-bg: rgba(0, 0, 0, 0.04);
+      --btn-glass-hover: rgba(0, 0, 0, 0.08);
+      --btn-primary-bg: #0f172a;
+      --btn-primary-text: #ffffff;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      background-image: radial-gradient(var(--grid-color) 1px, transparent 1px);
+      background-size: 24px 24px;
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: 0.3s ease;
+    }
+
+    .glass-card {
+      background: var(--glass-panel);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-control {
+      background: var(--input-bg) !important;
+      border: 1px solid var(--glass-border) !important;
+      color: var(--text-main) !important;
+      border-radius: 8px;
+      padding: 10px 15px;
+      box-shadow: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--accent-blue) !important;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+    }
+
+    .form-control[readonly] {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .form-label {
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .btn-glass {
+      background: var(--btn-glass-bg);
+      border: 1px solid var(--glass-border);
+      color: var(--text-main);
+      font-weight: 500;
+      transition: 0.2s;
+    }
+
+    .btn-glass:hover {
+      background: var(--btn-glass-hover);
+      color: var(--text-main);
+      transform: translateY(-1px);
+    }
+
+    .pulse-dot {
+      height: 8px;
+      width: 8px;
+      background-color: var(--accent-green);
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      animation: pulse 1.5s infinite;
+      margin-right: 6px;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      }
+
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+      }
+
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+      }
+    }
+
+    .table {
+      --bs-table-bg: transparent;
+      --bs-table-color: var(--text-main);
+      margin-bottom: 0;
+    }
+
+    .table td,
+    .table th {
+      border-bottom-color: var(--glass-border);
+      vertical-align: middle;
+      padding: 1rem;
+    }
+
+    .tag-badge {
+      background: var(--btn-glass-bg);
+      border: 1px solid var(--glass-border);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    /* TABS STYLING */
+    .nav-tabs-custom {
+      display: flex;
+      gap: 20px;
+      border-bottom: 1px solid var(--glass-border);
+      overflow-x: auto;
+      white-space: nowrap;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      scrollbar-width: none;
+    }
+
+    .nav-item-custom {
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding-bottom: 8px;
+      transition: 0.3s;
+      position: relative;
+    }
+
+    .nav-item-custom:hover {
+      color: var(--text-main);
+    }
+
+    .nav-item-custom.active {
+      color: var(--accent-blue);
+    }
+
+    .nav-item-custom.active::after {
+      content: '';
+      position: absolute;
+      bottom: -11px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--accent-blue);
+      border-radius: 2px;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ADMIN LOGIN SCREEN */
+    #adminLoginWrapper {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    #adminDashboardWrapper {
+      display: none;
+      padding-bottom: 50px;
+    }
+  </style>
+</head>
+
+<body class="bg-body-tertiary">
+
+  <!-- ================= 1. ADMIN LOGIN SCREEN ================= -->
+  <div id="adminLoginWrapper">
+    <div class="glass-card p-5 text-center" style="width: 100%; max-width: 400px;">
+      <div style="background: var(--btn-glass-bg); width: 60px; height: 60px; border-radius: 12px; border: 1px solid var(--glass-border); color: var(--accent-blue); display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px;">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <h3 class="fw-bold mb-1">God Mode</h3>
+      <p class="text-muted small mb-4">Authorized Personnel Only</p>
+
+      <input type="password" id="loginSecret" class="form-control mb-3 text-center" placeholder="Enter Master Secret..." onkeypress="handleEnter(event)">
+      <button class="btn btn-primary w-100" style="background: var(--accent-blue); color: white; border: none; font-weight: 600; padding: 12px; border-radius: 8px;" onclick="authenticateAdmin()" id="authBtn">Authenticate</button>
+      <div id="authError" class="mt-3 text-danger small fw-bold" style="display: none;"></div>
+    </div>
+  </div>
+
+  <!-- ================= 2. MAIN DASHBOARD ================= -->
+  <div id="adminDashboardWrapper">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg glass-card m-3 p-3 border-0">
+      <div class="container-fluid">
+        <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#" style="color: var(--text-main);">
+          <div style="background: var(--btn-glass-bg); padding: 5px 10px; border-radius: 8px; border: 1px solid var(--glass-border); color: var(--accent-blue);">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          God Mode <span style="font-size: 10px; color: var(--accent-green); letter-spacing: 1px; margin-left: 5px; font-weight: 700; padding: 2px 6px; background: rgba(16, 185, 129, 0.1); border-radius: 4px; border: 1px solid rgba(16, 185, 129, 0.2);">SECURE</span>
+        </a>
+        <div class="d-flex align-items-center gap-3">
+          <div class="form-check form-switch fs-6 d-flex align-items-center me-2">
+            <input class="form-check-input me-2 shadow-none" type="checkbox" role="switch" id="masterAccessToggle" onchange="toggleMasterAccess()" style="height: 20px; width: 40px; background-color: var(--btn-glass-bg); border-color: var(--glass-border);">
+            <label class="form-check-label fw-bold text-muted" id="masterToggleLabel" style="font-size: 13px;">App Status</label>
+          </div>
+          <button class="btn btn-glass rounded-circle px-2 py-1" onclick="toggleTheme()" id="themeBtn"><i class="fa-solid fa-sun"></i></button>
+          <button class="btn btn-glass rounded-circle px-2 py-1 text-danger border-danger" onclick="logoutAdmin()" title="Lock Panel"><i class="fa-solid fa-lock"></i></button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid px-4">
+      <!-- TABS NAVIGATION -->
+      <div class="nav-tabs-custom" id="adminTabs">
+        <div class="nav-item-custom active" onclick="switchTab('tab-users')"><i class="fa-solid fa-users me-2"></i>Accounts & Subscriptions</div>
+        <div class="nav-item-custom" onclick="switchTab('tab-reviews')"><i class="fa-solid fa-star me-2"></i>Reviews <span id="badge-reviews" class="badge bg-danger rounded-pill ms-1 d-none">0</span></div>
+        <div class="nav-item-custom" onclick="switchTab('tab-messages')"><i class="fa-solid fa-envelope me-2"></i>Messages <span id="badge-messages" class="badge bg-primary rounded-pill ms-1 d-none">0</span></div>
+        <div class="nav-item-custom" onclick="switchTab('tab-ads')"><i class="fa-solid fa-bullhorn me-2"></i>Marketing Board</div>
+        <div class="nav-item-custom" onclick="switchTab('tab-marketing')"><i class="fa-solid fa-bullhorn me-2"></i>Marketing & Content</div>
+      </div>
+
+      <!-- ================= TAB 1: USERS ================= -->
+      <div id="tab-users" class="tab-content active">
+        <div class="row mb-4 g-3">
+          <div class="col-6">
+            <div class="glass-card p-3 text-center">
+              <div class="text-muted text-uppercase fw-bold" style="font-size:11px;">Total Accounts</div>
+              <h3 class="fw-bold mb-0 mt-1" id="totalUsersCount">0</h3>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="glass-card p-3 text-center">
+              <div class="text-muted text-uppercase fw-bold" style="font-size:11px;">Live Now</div>
+              <h3 class="fw-bold mb-0 mt-1" id="liveUsersCount"><span class="pulse-dot"></span>0</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <!-- User Form (Create & Edit) -->
+          <div class="col-lg-4">
+            <div class="glass-card p-4 h-100">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <h6 class="fw-bold mb-0" id="formTitle">➕ Create New User</h6>
+                <button class="btn btn-glass btn-sm d-none" id="cancelEditBtn" onclick="resetForm()"><i class="fa-solid fa-xmark text-danger"></i> Cancel Edit</button>
+              </div>
+
+              <!-- Hidden flag to know if we are updating -->
+              <input type="hidden" id="isEditMode" value="false">
+
+              <div class="mb-3"><label class="form-label">Unique User ID</label><input type="text" id="userId" class="form-control" placeholder="e.g. aniket_01"></div>
+              <div class="mb-3"><label class="form-label">Full Name</label><input type="text" id="userName" class="form-control" placeholder="e.g. Aniket Kewat"></div>
+              <div class="mb-3"><label class="form-label">Mobile Number</label><input type="text" id="userMobile" class="form-control" placeholder="e.g. 6266562082"></div>
+              <div class="mb-3"><label class="form-label">Password</label><input type="text" id="userPass" class="form-control" placeholder="Set secure password"></div>
+
+              <div class="row mb-4">
+                <div class="col-6"><label class="form-label">Device Limit</label><input type="number" id="userDevices" class="form-control" value="1" min="1"></div>
+                <div class="col-6"><label class="form-label">Add Days (Validity)</label><input type="number" id="userValidity" class="form-control" value="30" min="0"></div>
+              </div>
+
+              <button class="btn btn-primary w-100" style="background:var(--text-main); color:var(--bg-main);" id="saveUserBtn" onclick="saveUser()">Save Subscription</button>
+              <div id="formMsg" class="mt-3 text-center small fw-bold"></div>
+            </div>
+          </div>
+
+          <!-- Users Table -->
+          <div class="col-lg-8">
+            <div class="glass-card p-0 h-100 overflow-hidden d-flex flex-column">
+              <div class="p-3 border-bottom d-flex justify-content-between align-items-center" style="border-color: var(--glass-border) !important;">
+                <h6 class="fw-bold mb-0 px-2">Manage Database</h6>
+                <button class="btn btn-glass btn-sm" onclick="fetchUsers()"><i class="fa-solid fa-rotate-right"></i></button>
+              </div>
+              <div class="table-responsive flex-grow-1">
+                <table class="table table-hover">
+                  <thead class="table-light" style="font-size:11px; text-transform:uppercase;">
+                    <tr>
+                      <th>User Info</th>
+                      <th>Mobile / Pass</th>
+                      <th>Expiry</th>
+                      <th>Devices</th>
+                      <th class="text-end">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="usersTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 2: REVIEWS ================= -->
+      <div id="tab-reviews" class="tab-content">
+        <div class="glass-card p-0 overflow-hidden">
+          <div class="p-3 border-bottom d-flex justify-content-between align-items-center" style="border-color: var(--glass-border) !important;">
+            <h6 class="fw-bold mb-0 px-2">Manage Public Reviews</h6>
+            <button class="btn btn-glass btn-sm" onclick="fetchReviews()"><i class="fa-solid fa-rotate-right"></i></button>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="table-light" style="font-size:11px; text-transform:uppercase;">
+                <tr>
+                  <th>Date</th>
+                  <th>User</th>
+                  <th>Rating</th>
+                  <th>Review Text</th>
+                  <th>Status</th>
+                  <th class="text-end">Action</th>
+                </tr>
+              </thead>
+              <tbody id="reviewsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 3: MESSAGES ================= -->
+      <div id="tab-messages" class="tab-content">
+        <div class="glass-card p-0 overflow-hidden">
+          <div class="p-3 border-bottom d-flex justify-content-between align-items-center" style="border-color: var(--glass-border) !important;">
+            <h6 class="fw-bold mb-0 px-2">Direct Messages / Feedback</h6>
+            <button class="btn btn-glass btn-sm" onclick="fetchMessages()"><i class="fa-solid fa-rotate-right"></i></button>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="table-light" style="font-size:11px; text-transform:uppercase;">
+                <tr>
+                  <th>Date</th>
+                  <th>Sender</th>
+                  <th>Contact</th>
+                  <th>Message</th>
+                  <th class="text-end">Action</th>
+                </tr>
+              </thead>
+              <tbody id="messagesTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 4: MARKETING & ADS ================= -->
+      <!-- ================= TAB: MARKETING & CONTENT ================= -->
+      <div id="tab-marketing" class="tab-content">
+        <div class="row g-4">
+          <!-- Static Ad Banner Control -->
+          <div class="col-lg-6">
+            <div class="glass-card p-4">
+              <h6 class="fw-bold mb-3"><i class="fa-solid fa-image text-warning me-2"></i> Static Ad Banner</h6>
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="adActive">
+                <label class="form-check-label" for="adActive">Enable Static Banner</label>
+              </div>
+              <input type="text" id="adImage" class="form-control mb-2" placeholder="Image URL">
+              <input type="text" id="adText" class="form-control mb-2" placeholder="Ad Headline">
+              <input type="text" id="adLink" class="form-control mb-3" placeholder="Redirect Link">
+              <button class="btn btn-primary w-100" onclick="saveAd()">Save Static Ad</button>
+            </div>
+          </div>
+
+          <!-- Scrolling Notices Control -->
+          <div class="col-lg-6">
+            <div class="glass-card p-4">
+              <h6 class="fw-bold mb-3"><i class="fa-solid fa-scroll text-primary me-2"></i> Manage Scrolling Notices</h6>
+              <div class="input-group mb-3">
+                <input type="text" id="noticeText" class="form-control" placeholder="New scrolling notice...">
+                <button class="btn btn-primary" onclick="addNotice()">Add</button>
+              </div>
+              <div id="noticeList" class="small text-muted"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <script>
+    // Notices Logic
+    let noticesArray = [];
+    async function fetchNotices() {
+      const res = await fetch(`${API_URL}/admin/notices`, {
+        headers: getHeaders()
+      });
+      noticesArray = await res.json();
+      const list = document.getElementById('noticeList');
+      list.innerHTML = noticesArray.map((n, i) => `
+            <div class="d-flex justify-content-between align-items-center mb-2 p-2 border-bottom">
+                <span>${n.text}</span>
+                <button class="btn btn-sm text-danger" onclick="deleteNotice(${i})"><i class="fa-solid fa-trash"></i></button>
+            </div>
+        `).join('');
+    }
+
+    async function addNotice() {
+      const text = document.getElementById('noticeText').value.trim();
+      if (!text) return;
+      noticesArray.push({
+        text,
+        isActive: true
+      });
+      await fetch(`${API_URL}/admin/notices`, {
+        method: "POST",
+        headers: getHeaders(),
+        body: JSON.stringify(noticesArray)
+      });
+      document.getElementById('noticeText').value = '';
+      fetchNotices();
+    }
+
+    async function deleteNotice(index) {
+      noticesArray.splice(index, 1);
+      await fetch(`${API_URL}/admin/notices`, {
+        method: "POST",
+        headers: getHeaders(),
+        body: JSON.stringify(noticesArray)
+      });
+      fetchNotices();
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // 🚨 APNI API YAHAN DAALO
+    const API_URL = "https://ab-to-padh-le-api.aniket07r.workers.dev";
+    let MASTER_SECRET = sessionStorage.getItem("adminKey") || "";
+
+    // ================= 0. AUTHENTICATION & UI LOGIC =================
+    window.onload = () => {
+      if (MASTER_SECRET) {
+        document.getElementById('adminLoginWrapper').style.display = 'none';
+        document.getElementById('adminDashboardWrapper').style.display = 'block';
+        initDashboard();
+      }
+    };
+
+    function handleEnter(e) {
+      if (e.key === 'Enter') authenticateAdmin();
+    }
+
+    async function authenticateAdmin() {
+      const inputKey = document.getElementById('loginSecret').value;
+      const btn = document.getElementById('authBtn');
+      const err = document.getElementById('authError');
+
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Checking...`;
+      err.style.display = 'none';
+
+      try {
+        // Test connection using /status which is public, but testing /admin/users proves auth
+        const res = await fetch(`${API_URL}/admin/users`, {
+          headers: {
+            "Content-Type": "application/json",
+            "admin-secret": inputKey
+          }
+        });
+        if (!res.ok) throw new Error("🚫 Invalid Master Secret!");
+
+        // Auth Success
+        MASTER_SECRET = inputKey;
+        sessionStorage.setItem("adminKey", MASTER_SECRET);
+
+        document.getElementById('adminLoginWrapper').style.display = 'none';
+        document.getElementById('adminDashboardWrapper').style.display = 'block';
+        initDashboard();
+      } catch (error) {
+        err.innerText = error.message;
+        err.style.display = 'block';
+      } finally {
+        btn.innerHTML = `Authenticate`;
+      }
+    }
+
+    function logoutAdmin() {
+      sessionStorage.removeItem("adminKey");
+      MASTER_SECRET = "";
+      window.location.reload();
+    }
+
+    function getHeaders() {
+      return {
+        "Content-Type": "application/json",
+        "admin-secret": MASTER_SECRET
+      };
+    }
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const btn = document.getElementById("themeBtn");
+      if (html.getAttribute("data-bs-theme") === "dark") {
+        html.setAttribute("data-bs-theme", "light");
+        btn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+      } else {
+        html.setAttribute("data-bs-theme", "dark");
+        btn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+      }
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.nav-item-custom').forEach(t => t.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.currentTarget.classList.add('active');
+    }
+
+    async function initDashboard() {
+      fetchGlobalStatus();
+      fetchUsers();
+      fetchReviews();
+      fetchMessages();
+      fetchAd();
+    }
+
+    // ================= 1. MASTER STATUS =================
+    async function fetchGlobalStatus() {
+      try {
+        const res = await fetch(`${API_URL}/status`);
+        const data = await res.json();
+        document.getElementById("masterAccessToggle").checked = data.isPublicMode;
+        document.getElementById("masterToggleLabel").innerHTML = data.isPublicMode ? `<span class="text-success">Unlocked</span>` : `<span class="text-danger">Locked</span>`;
+      } catch (err) {}
+    }
+    async function toggleMasterAccess() {
+      const isPublic = document.getElementById("masterAccessToggle").checked;
+      await fetch(`${API_URL}/admin/settings`, {
+        method: "POST",
+        headers: getHeaders(),
+        body: JSON.stringify({
+          isPublicMode: isPublic
+        })
+      });
+      fetchGlobalStatus();
+    }
+
+    // ================= 2. USERS LOGIC (With Edit) =================
+    async function fetchUsers() {
+      const tbody = document.getElementById("usersTableBody");
+      try {
+        const res = await fetch(`${API_URL}/admin/users`, {
+          headers: getHeaders()
+        });
+        const data = await res.json();
+        let html = "";
+        let total = 0;
+        let live = 0;
+        for (const [id, user] of Object.entries(data.users)) {
+          total++;
+          const isExpired = user.expiresAt < new Date().toISOString().split('T')[0];
+          const activeCount = user.activeTokens ? user.activeTokens.length : 0;
+          if (activeCount > 0) live++;
+
+          const mobileTxt = user.mobile ? `<i class="fa-solid fa-phone text-success" style="font-size:10px;"></i> ${user.mobile}` : `<span class="text-muted" style="font-size:11px;">No Mobile</span>`;
+
+          html += `<tr>
+                    <td><div class="fw-bold" style="font-size:13px; color:var(--accent-blue);">${id}</div><div style="font-size:12px;">${user.name}</div></td>
+                    <td><div style="font-size:12px;">${mobileTxt}</div><div style="font-size:11px; color:var(--text-muted);"><i class="fa-solid fa-key me-1"></i>${user.password}</div></td>
+                    <td style="font-size:12px; color:${isExpired?'#ef4444':''}">${user.expiresAt}</td>
+                    <td><div style="font-size:11px;" class="text-muted mb-1">${activeCount} / ${user.allowedDevices}</div><div class="progress" style="height:4px;width:50px;background:var(--glass-border);"><div class="progress-bar ${activeCount>=user.allowedDevices?'bg-danger':'bg-primary'}" style="width:${(activeCount/user.allowedDevices)*100}%"></div></div></td>
+                    <td class="text-end">
+                        <button onclick="editUser('${id}', '${user.name}', '${user.password}', '${user.mobile || ''}', ${user.allowedDevices})" class="btn btn-glass btn-sm me-1" title="Edit User"><i class="fa-solid fa-pen text-info"></i></button>
+                        <button onclick="resetDevice('${id}')" class="btn btn-glass btn-sm me-1" title="Logout Devices"><i class="fa-solid fa-power-off text-warning"></i></button>
+                        <button onclick="deleteUser('${id}')" class="btn btn-glass btn-sm" title="Delete"><i class="fa-solid fa-trash text-danger"></i></button>
+                    </td>
+                </tr>`;
+        }
+        tbody.innerHTML = html;
+        document.getElementById("totalUsersCount").innerText = total;
+        document.getElementById("liveUsersCount").innerHTML = `<span class="pulse-dot"></span>${live}`;
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-danger py-4">Error loading users</td></tr>`;
+      }
+    }
+
+    function editUser(id, name, pass, mobile, devices) {
+      document.getElementById("formTitle").innerHTML = `✏️ Edit User: <span class="text-primary">${id}</span>`;
+      document.getElementById("isEditMode").value = "true";
+      document.getElementById("cancelEditBtn").classList.remove("d-none");
+      document.getElementById("saveUserBtn").innerHTML = "Update Subscription";
+
+      const idInput = document.getElementById("userId");
+      idInput.value = id;
+      idInput.setAttribute("readonly", true);
+
+      document.getElementById("userName").value = name;
+      document.getElementById("userPass").value = pass;
+      document.getElementById("userMobile").value = mobile;
+      document.getElementById("userDevices").value = devices;
+      document.getElementById("userValidity").value = "0"; // Default 0 for edit so it doesn't auto-add days unless they type it
+
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    function resetForm() {
+      document.getElementById("formTitle").innerHTML = `➕ Create New User`;
+      document.getElementById("isEditMode").value = "false";
+      document.getElementById("cancelEditBtn").classList.add("d-none");
+      document.getElementById("saveUserBtn").innerHTML = "Save Subscription";
+
+      const idInput = document.getElementById("userId");
+      idInput.value = "";
+      idInput.removeAttribute("readonly");
+
+      document.getElementById("userName").value = "";
+      document.getElementById("userPass").value = "";
+      document.getElementById("userMobile").value = "";
+      document.getElementById("userDevices").value = "1";
+      document.getElementById("userValidity").value = "30";
+    }
+
+    async function saveUser() {
+      const msgDiv = document.getElementById("formMsg");
+      const isEdit = document.getElementById("isEditMode").value === "true";
+      const payload = {
+        isEdit: isEdit,
+        userId: document.getElementById("userId").value.trim(),
+        name: document.getElementById("userName").value.trim(),
+        password: document.getElementById("userPass").value.trim(),
+        mobile: document.getElementById("userMobile").value.trim(),
+        allowedDevices: document.getElementById("userDevices").value,
+        validityDays: document.getElementById("userValidity").value
+      };
+
+      if (!payload.userId || !payload.password) {
+        msgDiv.innerHTML = `<span class="text-danger">ID & Password required!</span>`;
+        return;
+      }
+
+      msgDiv.innerHTML = `<span class="text-muted"><i class="fa-solid fa-spinner fa-spin"></i> Saving...</span>`;
+      try {
+        const res = await fetch(`${API_URL}/admin/user`, {
+          method: "POST",
+          headers: getHeaders(),
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+        msgDiv.innerHTML = `<span class="text-success">${data.message}</span>`;
+        fetchUsers();
+        if (!isEdit) resetForm(); // Only clear form if it was a new user creation
+        setTimeout(() => {
+          msgDiv.innerHTML = "";
+        }, 3000);
+      } catch (err) {
+        msgDiv.innerHTML = `<span class="text-danger">${err.message}</span>`;
+      }
+    }
+
+    async function deleteUser(userId) {
+      if (confirm(`Delete user: ${userId}?`)) {
+        await fetch(`${API_URL}/admin/user`, {
+          method: "DELETE",
+          headers: getHeaders(),
+          body: JSON.stringify({
+            userId
+          })
+        });
+        fetchUsers();
+      }
+    }
+    async function resetDevice(userId) {
+      if (confirm(`Log out ${userId} from all devices?`)) {
+        await fetch(`${API_URL}/admin/reset-device`, {
+          method: "POST",
+          headers: getHeaders(),
+          body: JSON.stringify({
+            userId
+          })
+        });
+        fetchUsers();
+      }
+    }
+
+    // ================= 3 & 4. REVIEWS, MESSAGES, ADS (Same as before) =================
+    async function fetchReviews() {
+      const tbody = document.getElementById("reviewsTableBody");
+      try {
+        const res = await fetch(`${API_URL}/admin/reviews`, {
+          headers: getHeaders()
+        });
+        const data = await res.json();
+        let html = "";
+        let pendingCount = 0;
+        const revList = data.reviews.reverse();
+        for (const r of revList) {
+          if (r.status === 'pending') pendingCount++;
+          const isFlagged = r.isFlagged && r.status === 'pending';
+          const rowClass = isFlagged ? 'bg-danger bg-opacity-10' : '';
+          const statusBadge = r.status === 'approved' ? `<span class="badge bg-success-subtle text-success">Approved</span>` : `<span class="badge bg-warning-subtle text-warning">Pending</span>`;
+          html += `<tr class="${rowClass}"><td style="font-size:12px;" class="text-muted">${r.date}</td><td style="font-size:13px;" class="fw-semibold">${r.name}</td><td style="font-size:11px;">${'⭐'.repeat(r.rating)}</td><td style="font-size:13px; max-width:250px;">${r.text}</td><td>${statusBadge}</td><td class="text-end">`;
+          if (r.status === 'pending') {
+            html += `<button onclick="actionReview('${r.id}', 'approve')" class="btn btn-glass btn-sm me-1 text-success"><i class="fa-solid fa-check"></i></button>`;
+          }
+          html += `<button onclick="actionReview('${r.id}', 'delete')" class="btn btn-glass btn-sm text-danger"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+        }
+        tbody.innerHTML = html;
+        const badge = document.getElementById('badge-reviews');
+        if (pendingCount > 0) {
+          badge.innerText = pendingCount;
+          badge.classList.remove('d-none');
+        } else {
+          badge.classList.add('d-none');
+        }
+      } catch (err) {}
+    }
+    async function actionReview(id, action) {
+      await fetch(`${API_URL}/admin/review-action`, {
+        method: "POST",
+        headers: getHeaders(),
+        body: JSON.stringify({
+          id,
+          action
+        })
+      });
+      fetchReviews();
+    }
+
+    async function fetchMessages() {
+      const tbody = document.getElementById("messagesTableBody");
+      try {
+        const res = await fetch(`${API_URL}/admin/messages`, {
+          headers: getHeaders()
+        });
+        const data = await res.json();
+        let html = "";
+        let unreadCount = 0;
+        const msgList = data.messages.reverse();
+        for (const m of msgList) {
+          if (m.status === 'unread') unreadCount++;
+          const isUnread = m.status === 'unread' ? 'fw-bold' : '';
+          const dot = m.status === 'unread' ? `<span class="pulse-dot bg-primary shadow-none" style="width:6px;height:6px;margin-right:8px;"></span>` : '';
+          html += `<tr class="${isUnread}"><td style="font-size:12px;" class="text-muted">${m.date}</td><td style="font-size:13px;">${dot}${m.name}</td><td style="font-size:12px;" class="text-info">${m.contact}</td><td style="font-size:13px; max-width:250px;">${m.message}</td><td class="text-end">`;
+          if (m.status === 'unread') {
+            html += `<button onclick="actionMessage('${m.id}', 'mark_read')" class="btn btn-glass btn-sm me-1 text-primary"><i class="fa-solid fa-envelope-open"></i></button>`;
+          }
+          html += `<button onclick="actionMessage('${m.id}', 'delete')" class="btn btn-glass btn-sm text-danger"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+        }
+        tbody.innerHTML = html;
+        const badge = document.getElementById('badge-messages');
+        if (unreadCount > 0) {
+          badge.innerText = unreadCount;
+          badge.classList.remove('d-none');
+        } else {
+          badge.classList.add('d-none');
+        }
+      } catch (err) {}
+    }
+    async function actionMessage(id, action) {
+      await fetch(`${API_URL}/admin/message-action`, {
+        method: "POST",
+        headers: getHeaders(),
+        body: JSON.stringify({
+          id,
+          action
+        })
+      });
+      fetchMessages();
+    }
+
+    async function fetchAd() {
+      try {
+        const res = await fetch(`${API_URL}/admin/ad`, {
+          headers: getHeaders()
+        });
+        const ad = await res.json();
+        document.getElementById("adActive").checked = ad.isActive || false;
+        document.getElementById("adImage").value = ad.imageUrl || "";
+        document.getElementById("adText").value = ad.text || "";
+        document.getElementById("adLink").value = ad.link || "";
+      } catch (err) {}
+    }
+    async function saveAd() {
+      const payload = {
+        isActive: document.getElementById("adActive").checked,
+        imageUrl: document.getElementById("adImage").value.trim(),
+        text: document.getElementById("adText").value.trim(),
+        link: document.getElementById("adLink").value.trim()
+      };
+      await fetch(`${API_URL}/admin/ad`, {
+        method: "POST",
+        headers: getHeaders(),
+        body: JSON.stringify(payload)
+      });
+      document.getElementById("adMsg").innerHTML = `<span class="text-success">Broadcast Updated!</span>`;
+      setTimeout(() => document.getElementById("adMsg").innerHTML = "", 3000);
+    }
+  </script>
+</body>
+
+</html>

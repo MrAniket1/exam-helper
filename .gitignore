@@ -1,0 +1,4 @@
+worker/.dev.vars
+.dev.vars
+.env
+.env.local
