@@ -48,6 +48,7 @@
       }
     });
   </script>
+
   <!-- SVG PAN ZOOM LIBRARY FOR INTERACTIVE NOTEBOOK-LM STYLE MINDMAPS -->
   <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
 
@@ -802,7 +803,7 @@
       display: none;
     }
 
-    /* ================= MINDMAP PAN & ZOOM STYLES (NEW) ================= */
+    /* ================= MINDMAP PAN & ZOOM STYLES ================= */
     #mermaidDiagram {
       width: 100%;
       height: 600px;
@@ -832,7 +833,6 @@
         padding: 30px 15px;
       }
 
-      /* Mobile Ad Layout */
       #adBanner {
         flex-direction: column;
         text-align: center;
@@ -871,7 +871,6 @@
   </div>
 
   <!-- ================= LANDING PAGE ================= -->
-  <!-- YE AAPKA PEHLA SEPARATE PAGE HAI (SPA Logic) -->
   <div id="landingPage" style="display: none;">
     <nav class="navbar glass-card animate-up">
       <div class="brand-logo">
@@ -943,7 +942,6 @@
         <button class="btn-glass w-100" style="background: var(--text-main); color: var(--bg-main); font-weight: 600;" onclick="submitReview()" id="btnRev">Submit Review</button>
         <div id="revMsg" style="font-size: 12px; margin-top: 10px; text-align: center; font-weight: 500;"></div>
       </div>
-
       <div class="glass-card form-card">
         <h3><i class="fa-solid fa-paper-plane text-primary"></i> Message Admin</h3>
         <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Feature request or found a bug? Tell Aniket directly.</p>
@@ -970,7 +968,6 @@
   </div>
 
   <!-- ================= MAIN APP WORKSPACE ================= -->
-  <!-- YE AAPKA DUSRA SEPARATE PAGE HAI (SPA Logic) -->
   <div id="mainAppWrapper">
     <nav class="navbar glass-card">
       <div class="brand-logo">
@@ -1042,8 +1039,8 @@
     // 🚨 APNI API YAHAN DAALO
     const API_URL = "https://ab-to-padh-le-api.aniket07r.workers.dev";
     let isAppPublic = true;
-    let quizDataStore = [];
-    let mindmapPanZoomInstance = null;
+    let quizDataStore = []; // MCQ data save karne ke liye
+    let mindmapPanZoomInstance = null; // Store pan/zoom instance to destroy it later
 
     // ================= INITIALIZATION & AUTO-LOGIN =================
     document.addEventListener("DOMContentLoaded", async () => {
@@ -1323,6 +1320,7 @@
     }
 
     // ================= AI WORKSPACE LOGIC =================
+
     document.getElementById('fileInput').addEventListener('change', function(e) {
       const statusDiv = document.getElementById('fileStatus');
       if (e.target.files[0]) {
@@ -1356,6 +1354,7 @@
         return;
       }
 
+      // Cleanup previous panzoom instance if exists
       if (mindmapPanZoomInstance) {
         mindmapPanZoomInstance.destroy();
         mindmapPanZoomInstance = null;
@@ -1394,6 +1393,7 @@
         const data = await response.json();
         let html = `<h3 style="color:var(--text-main); margin-top:0;">${formatType}</h3><hr style="border:0; border-top:1px solid var(--glass-border); margin:15px 0;">`;
 
+        // RENDER LOGIC
         if (formatType === 'Text-based Mindmap') {
           let match = (data.aiResponse || "").match(/```(?:mermaid)?\s*([\s\S]*?)```/i);
           cleanMermaid = match ? match[1].trim() : (data.aiResponse || "").trim();
@@ -1432,6 +1432,7 @@
         loader.style.display = 'none';
         outputArea.style.display = 'block';
 
+        // 🚀 RENDER MERMAID IN-MEMORY & APPLY PAN-ZOOM
         if (formatType === 'Text-based Mindmap' && cleanMermaid) {
           try {
             const uniqueId = 'mermaid-svg-' + Date.now();
@@ -1441,16 +1442,17 @@
             const diagramContainer = document.getElementById('mermaidDiagram');
             diagramContainer.innerHTML = svg;
 
+            // Initialize SVG Pan/Zoom on the newly created SVG
             setTimeout(() => {
               const svgElement = diagramContainer.querySelector('svg');
               if (svgElement) {
                 svgElement.style.width = "100%";
                 svgElement.style.height = "100%";
-                svgElement.style.maxWidth = "none";
+                svgElement.style.maxWidth = "none"; // Override any mermaid max-width defaults
 
                 mindmapPanZoomInstance = svgPanZoom(svgElement, {
                   zoomEnabled: true,
-                  controlIconsEnabled: true,
+                  controlIconsEnabled: true, // Shows UI buttons for zoom
                   fit: true,
                   center: true,
                   minZoom: 0.1,
@@ -1474,6 +1476,8 @@
           setTimeout(() => logoutApp(), 2500);
         }
       } finally {
+        // CLEANUP: Loader hide karo aur MathJax typeset karo.
+        // NAYA FIX: Yahan mermaid.run() hata diya gaya hai double render clash rokne ke liye.
         clearInterval(loaderInterval);
         loader.style.display = 'none';
         outputArea.style.display = 'block';
@@ -1493,7 +1497,7 @@
     let userAnswers = {};
 
     function renderQuizUI(questionsArray) {
-      userAnswers = {};
+      userAnswers = {}; // Reset answers
       if (!Array.isArray(questionsArray)) return "Error: Invalid quiz format received.";
 
       let html = `<div>`;
@@ -1518,10 +1522,12 @@
 
     function selectOption(qIndex, optIndex) {
       userAnswers[qIndex] = optIndex;
+      // Puraana selection reset karo
       for (let i = 0; i < 4; i++) {
         let btn = document.getElementById(`btn-${qIndex}-${i}`);
         if (btn) btn.classList.remove('selected');
       }
+      // Naya highlight karo
       document.getElementById(`btn-${qIndex}-${optIndex}`).classList.add('selected');
     }
 
@@ -1533,11 +1539,14 @@
         let correctOpt = q.answer;
         let userOpt = userAnswers[qIndex];
 
+        // Saare buttons disable kar do
         for (let i = 0; i < 4; i++) {
           let btn = document.getElementById(`btn-${qIndex}-${i}`);
           if (btn) {
             btn.disabled = true;
+            // Sahi answer ko hamesha green karo
             if (i === correctOpt) btn.classList.add('correct');
+            // Agar user ne galat choose kiya toh usko red karo
             if (userOpt !== undefined && i === userOpt && userOpt !== correctOpt) {
               btn.classList.add('wrong');
             }
