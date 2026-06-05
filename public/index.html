@@ -32,6 +32,25 @@
   </script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
+  <!-- MERMAID.JS FOR VISUAL MINDMAPS -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: 'rgba(59, 130, 246, 0.2)',
+        primaryTextColor: '#f8fafc',
+        primaryBorderColor: '#3b82f6',
+        lineColor: '#a1a1aa',
+        secondaryColor: 'rgba(16, 185, 129, 0.2)',
+        tertiaryColor: '#09090b'
+      }
+    });
+  </script>
+  <!-- SVG PAN ZOOM LIBRARY FOR INTERACTIVE NOTEBOOK-LM STYLE MINDMAPS -->
+  <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+
   <style>
     /* ================= GLOBAL RESET ================= */
     *,
@@ -59,6 +78,7 @@
       --btn-primary-text: #000;
       --danger: #ef4444;
       --warning: #f59e0b;
+      --success: #10b981;
     }
 
     [data-theme="light"] {
@@ -78,6 +98,7 @@
       --btn-primary-text: #ffffff;
       --danger: #dc2626;
       --warning: #d97706;
+      --success: #059669;
     }
 
     html,
@@ -90,7 +111,6 @@
       min-height: 100vh;
       margin: 0;
       padding: 0;
-      max-width: 100vw;
       overflow-x: hidden;
       scroll-behavior: smooth;
       transition: background-color 0.3s ease, color 0.3s ease;
@@ -247,58 +267,7 @@
       letter-spacing: 0.5px;
     }
 
-    #landingPage {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    /* AD BANNER */
-    #adBanner {
-      display: none;
-      margin: 10px auto;
-      width: calc(100% - 30px);
-      max-width: 800px;
-      background: linear-gradient(90deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1));
-      border: 1px solid var(--accent-blue);
-      border-radius: 12px;
-      padding: 12px 20px;
-      align-items: center;
-      gap: 15px;
-      justify-content: space-between;
-    }
-
-    .ad-content {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .ad-img {
-      max-height: 40px;
-      border-radius: 6px;
-      object-fit: cover;
-      display: none;
-    }
-
-    .ad-text {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-main);
-      margin: 0;
-    }
-
-    .ad-btn {
-      background: var(--accent-blue);
-      color: white;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
+    /* LANDING PAGE STYLES */
     .hero {
       text-align: center;
       padding: 40px 20px;
@@ -367,7 +336,6 @@
       line-height: 1.6;
       font-style: italic;
       flex-grow: 1;
-      /* Default 4-5 line dikhega */
       display: -webkit-box;
       -webkit-line-clamp: 5;
       -webkit-box-orient: vertical;
@@ -377,7 +345,6 @@
 
     .review-text.expanded {
       -webkit-line-clamp: unset;
-      /* Pura text dikhega */
     }
 
     .read-more-btn {
@@ -404,14 +371,7 @@
       margin-top: 5px;
     }
 
-    /* FOUNDER SECTION */
-    .founder-section {
-      padding: 20px;
-      width: 100%;
-      max-width: 800px;
-      margin: 0 auto 50px;
-    }
-
+    /* FORMS & FOUNDER GRID */
     .founder-card {
       padding: 30px;
       display: flex;
@@ -421,14 +381,16 @@
       gap: 20px;
       border-color: rgba(59, 130, 246, 0.3);
       background: linear-gradient(180deg, var(--glass-panel) 0%, rgba(59, 130, 246, 0.02) 100%);
+      margin: 20px auto;
+      max-width: 800px;
     }
 
     @media (min-width: 600px) {
       .founder-card {
         flex-direction: row;
         text-align: left;
-        gap: 30px;
         padding: 40px;
+        gap: 30px;
       }
     }
 
@@ -447,7 +409,6 @@
       border: 4px solid var(--glass-border);
     }
 
-    /* FORMS GRID */
     .forms-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
@@ -496,7 +457,7 @@
       color: var(--warning);
     }
 
-    /* ================= WORKSPACE & LOGIN ================= */
+    /* ================= WORKSPACE & APP ================= */
     #mainAppWrapper {
       display: none;
     }
@@ -559,6 +520,7 @@
       font-size: 14px;
     }
 
+    /* MODALS & OVERLAYS */
     #loginModalOverlay {
       position: fixed;
       top: 0;
@@ -590,18 +552,23 @@
       transform: translateY(0) scale(1);
     }
 
-    @media (max-width: 600px) {
-      .hide-mobile {
-        display: none !important;
-      }
-
-      .navbar {
-        margin: 10px;
-        padding: 10px 15px;
-      }
+    #fullScreenLoader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-main);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      transition: 0.3s ease;
     }
 
-    /* Single Streamlined Notice Container */
+    /* ================= NEW PREMIUM SITE BOARD & MARQUEE ================= */
     #siteBoard {
       width: 100%;
       max-width: 800px;
@@ -609,41 +576,30 @@
       padding: 0 15px;
     }
 
-    .notice-item {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    .marquee-container {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
       padding: 10px 15px;
-      border-radius: 10px;
-      margin-bottom: 8px;
+      border-radius: 12px;
+      overflow: hidden;
+      white-space: nowrap;
+      margin-bottom: 15px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      font-size: 13px;
-    }
-
-    .marquee-container {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      padding: 8px 15px;
-      border-radius: 10px;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-
-    .marquee-container {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      padding: 8px 15px;
-      border-radius: 10px;
-      overflow: hidden;
-      white-space: nowrap;
-      margin-bottom: 10px;
+      gap: 15px;
+      mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
     }
 
     .marquee {
       display: inline-block;
       padding-left: 100%;
-      animation: scroll 15s linear infinite;
+      animation: scroll 35s linear infinite;
+    }
+
+    .marquee-container:hover .marquee {
+      animation-play-state: paused;
+      cursor: default;
     }
 
     @keyframes scroll {
@@ -655,48 +611,303 @@
         transform: translate(-100%, 0);
       }
     }
+
+    .latest-badge {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      z-index: 10;
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+    }
+
+    .fa-bell.shake {
+      animation: shake 2s infinite;
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+
+      25% {
+        transform: rotate(-15deg);
+      }
+
+      75% {
+        transform: rotate(15deg);
+      }
+    }
+
+    /* ================= NEW PREMIUM AD BANNER ================= */
+    #adBanner {
+      display: none;
+      margin: 15px auto;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(16, 185, 129, 0.08));
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 16px;
+      padding: 20px;
+      align-items: center;
+      gap: 20px;
+      justify-content: space-between;
+      flex-direction: row;
+    }
+
+    .ad-announcement-tag {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+      color: white;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-bottom-right-radius: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .ad-content {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .ad-img {
+      width: 120px;
+      height: 80px;
+      border-radius: 10px;
+      object-fit: cover;
+      display: none;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--glass-border);
+      flex-shrink: 0;
+    }
+
+    .ad-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .ad-btn {
+      background: var(--text-main);
+      color: var(--bg-main);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: 0.3s;
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .ad-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
+      color: var(--bg-main);
+      text-decoration: none;
+    }
+
+    /* ================= MCQ QUIZ UI STYLES ================= */
+    .quiz-card {
+      background: rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--glass-border);
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+
+    .quiz-question {
+      font-weight: 600;
+      margin-bottom: 15px;
+      font-size: 15px;
+    }
+
+    .quiz-opt-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 12px 15px;
+      margin-bottom: 10px;
+      background: var(--btn-glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--text-main);
+      transition: 0.2s;
+      font-size: 14px;
+    }
+
+    .quiz-opt-btn:hover:not(:disabled) {
+      background: var(--btn-glass-hover);
+      border-color: var(--accent-blue);
+    }
+
+    .quiz-opt-btn.selected {
+      border-color: var(--accent-blue);
+      background: rgba(59, 130, 246, 0.1);
+      font-weight: 600;
+    }
+
+    .quiz-opt-btn.correct {
+      border-color: var(--success);
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+    }
+
+    .quiz-opt-btn.wrong {
+      border-color: var(--danger);
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--danger);
+    }
+
+    .quiz-opt-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.8;
+    }
+
+    .score-board {
+      text-align: center;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent-green);
+      margin-top: 20px;
+      padding: 20px;
+      background: rgba(16, 185, 129, 0.1);
+      border-radius: 10px;
+      display: none;
+    }
+
+    /* ================= MINDMAP PAN & ZOOM STYLES (NEW) ================= */
+    #mermaidDiagram {
+      width: 100%;
+      height: 600px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: grab;
+      position: relative;
+      border: 1px solid var(--glass-border);
+    }
+
+    #mermaidDiagram:active {
+      cursor: grabbing;
+    }
+
+    @media (max-width: 600px) {
+      .hide-mobile {
+        display: none !important;
+      }
+
+      .navbar {
+        margin: 10px;
+        padding: 10px 15px;
+      }
+
+      .hero {
+        padding: 30px 15px;
+      }
+
+      /* Mobile Ad Layout */
+      #adBanner {
+        flex-direction: column;
+        text-align: center;
+        padding: 25px 15px 15px;
+      }
+
+      .ad-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+      }
+
+      .ad-img {
+        width: 100%;
+        height: 160px;
+      }
+
+      .ad-btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      #mermaidDiagram {
+        height: 450px;
+      }
+    }
   </style>
 </head>
 
 <body>
 
+  <!-- GLOBAL LOADER (Auto-Login flicker rokne ke liye) -->
+  <div id="fullScreenLoader">
+    <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 40px; color: var(--accent-blue);"></i>
+    <p style="font-weight: 600; color: var(--text-muted); margin-top: 10px;">Setting up workspace...</p>
+  </div>
+
   <!-- ================= LANDING PAGE ================= -->
-  <div id="landingPage">
+  <!-- YE AAPKA PEHLA SEPARATE PAGE HAI (SPA Logic) -->
+  <div id="landingPage" style="display: none;">
     <nav class="navbar glass-card animate-up">
       <div class="brand-logo">
         <div class="brand-icon"><i class="fa-solid fa-shield-halved"></i></div>Ab To Padh Le
       </div>
       <div style="display: flex; gap: 10px; align-items: center;">
-        <div class="creator-badge"><i class="fa-solid fa-bolt"></i> By Aniket Kewat</div>
-        <button class="btn-glass" onclick="toggleTheme()" id="themeBtn" title="Toggle Theme" style="padding: 8px 10px; border-radius: 50%;"><i class="fa-solid fa-sun"></i></button>
+        <div class="creator-badge hide-mobile"><i class="fa-solid fa-bolt"></i> By Aniket Kewat</div>
+        <button class="btn-glass" onclick="toggleTheme()" id="themeBtnLanding" title="Toggle Theme" style="padding: 8px 10px; border-radius: 50%;"><i class="fa-solid fa-sun"></i></button>
       </div>
     </nav>
 
-    <div id="siteBoard" class="animate-up delay-1" style="width: 100%; max-width: 800px; margin: 10px auto; padding: 0 15px;">
-
-      <div class="glass-card" style="padding: 10px 20px; overflow: hidden; margin-bottom: 10px;">
-        <div style="display: flex; align-items: center; gap: 15px;">
-          <div style="font-size: 10px; font-weight: 800; color: var(--danger); text-transform: uppercase;">Latest</div>
-          <div class="marquee" id="tickerContainer"></div>
-        </div>
+    <!-- PREMIUM NOTICES & ADS -->
+    <div id="siteBoard" class="animate-up delay-1">
+      <div class="marquee-container" id="tickerWrapper" style="display: none;">
+        <div class="latest-badge"><i class="fa-solid fa-bell shake"></i> Latest</div>
+        <div class="marquee" id="tickerContainer"></div>
       </div>
-      <div id="siteBoard"></div>
-      <div id="adBanner" class="glass-card" style="display: none; padding: 15px 20px; align-items: center; justify-content: space-between; border: 1px solid var(--accent-blue);">
+
+      <div id="adBanner" class="glass-card">
+        <div class="ad-announcement-tag"><i class="fa-solid fa-bullhorn"></i> Announcement</div>
         <div class="ad-content">
-          <img id="adBannerImg" src="" class="ad-img" alt="Ad">
+          <img id="adBannerImg" src="" class="ad-img" alt="Ad Thumbnail">
           <p id="adBannerText" class="ad-text"></p>
         </div>
-        <a id="adBannerLink" href="#" target="_blank" class="ad-btn">View</a>
+        <a id="adBannerLink" href="#" target="_blank" class="ad-btn">View Details <i class="fa-solid fa-arrow-right"></i></a>
       </div>
     </div>
 
+    <!-- HERO SECTION -->
     <main class="hero animate-up delay-2">
       <h1>Master Exams with <br><span>AI Revision Tools</span></h1>
-      <p>Stop wasting time summarizing long PDFs. Let AI generate your structured notes, lesson plans, and mock tests in seconds.</p>
+      <p>Stop wasting time summarizing long PDFs. Let AI generate your structured notes, visual mindmaps, and interactive mock tests in seconds.</p>
       <button class="btn-primary" style="max-width: 250px;" onclick="handleEnterWorkspace()">Enter Workspace <i class="fa-solid fa-arrow-right ms-2" style="margin-left: 8px;"></i></button>
     </main>
 
-    <!-- DYNAMIC REVIEWS SECTION -->
+    <!-- REVIEWS SECTION -->
     <div id="reviewsSection" style="display: none;">
       <h2 class="section-title animate-up"><i class="fa-solid fa-heart" style="color: var(--danger); margin-right: 10px;"></i> Wall of Love</h2>
       <div class="reviews-grid" id="reviewsContainer">
@@ -704,28 +915,22 @@
       </div>
     </div>
 
-    <!-- MEET THE CREATOR -->
-    <section class="founder-section animate-up">
+    <!-- FOUNDER SECTION -->
+    <section class="animate-up">
       <div class="glass-card founder-card">
         <div class="founder-avatar">AK</div>
         <div class="founder-info">
           <h4 style="margin: 0 0 8px 0; font-size: 22px; font-weight: 700;">Meet the Creator</h4>
           <p style="margin: 0 0 15px 0; font-size: 14px; color: var(--text-muted); line-height: 1.6;">Hi, I'm <strong>Aniket Kewat</strong>. As a B.Ed. student at CTE Raipur, I realized we waste too much time organizing syllabus notes. I built <strong>Ab To Padh Le</strong> so we can all study smarter, master our pedagogy, and focus on becoming great teachers.</p>
-          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-            <a href="https://wa.me/916266562082" target="_blank" class="btn-glass" style="font-size: 13px; padding: 8px 16px;"><i class="fa-brands fa-whatsapp text-success"></i> +91 6266562082</a>
-            <a href="mailto:aniket.cte+atpl@gmail.com" class="btn-glass" style="font-size: 13px; padding: 8px 16px;"><i class="fa-regular fa-envelope text-info"></i> aniket.cte+atpl@gmail.com</a>
-          </div>
         </div>
       </div>
     </section>
 
     <!-- FEEDBACK & DIRECT MESSAGE HUB -->
     <div class="forms-grid animate-up">
-      <!-- Submit Review Form -->
       <div class="glass-card form-card">
         <h3><i class="fa-solid fa-star text-warning"></i> Drop a Review</h3>
         <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Your feedback helps us improve!</p>
-
         <div class="rating-input">
           <input type="radio" name="rating" id="star5" value="5" checked><label for="star5"><i class="fa-solid fa-star"></i></label>
           <input type="radio" name="rating" id="star4" value="4"><label for="star4"><i class="fa-solid fa-star"></i></label>
@@ -733,18 +938,15 @@
           <input type="radio" name="rating" id="star2" value="2"><label for="star2"><i class="fa-solid fa-star"></i></label>
           <input type="radio" name="rating" id="star1" value="1"><label for="star1"><i class="fa-solid fa-star"></i></label>
         </div>
-
         <input type="text" id="revName" placeholder="Your Name (Optional)" style="padding: 10px; font-size: 14px;">
         <textarea id="revText" placeholder="How is this tool helping you?" style="height: 80px; padding: 10px; font-size: 14px;"></textarea>
         <button class="btn-glass w-100" style="background: var(--text-main); color: var(--bg-main); font-weight: 600;" onclick="submitReview()" id="btnRev">Submit Review</button>
         <div id="revMsg" style="font-size: 12px; margin-top: 10px; text-align: center; font-weight: 500;"></div>
       </div>
 
-      <!-- Direct Message Form -->
       <div class="glass-card form-card">
         <h3><i class="fa-solid fa-paper-plane text-primary"></i> Message Admin</h3>
         <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Feature request or found a bug? Tell Aniket directly.</p>
-
         <input type="text" id="msgName" placeholder="Your Name" style="padding: 10px; font-size: 14px;">
         <input type="text" id="msgContact" placeholder="Your Phone or Email" style="padding: 10px; font-size: 14px;">
         <textarea id="msgText" placeholder="Type your message here..." style="height: 80px; padding: 10px; font-size: 14px;"></textarea>
@@ -764,13 +966,11 @@
       <input type="text" id="userIdInput" placeholder="User ID" autocomplete="off">
       <input type="password" id="userPassInput" placeholder="Password">
       <button class="btn-primary" onclick="handleLogin()" id="loginBtn">Authenticate & Enter</button>
-      <div style="font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--glass-border); padding-top: 15px; margin-top: 20px;">
-        Don't have an ID? <br><a href="https://wa.me/916266562082?text=Hi%20Aniket,%20I%20want%20premium%20access%20to%20Ab%20To%20Padh%20Le!" target="_blank" style="color: var(--accent-green); font-weight: 600; text-decoration: none; display: inline-block; margin-top: 5px; padding: 5px;"><i class="fa-brands fa-whatsapp"></i> Request Access</a>
-      </div>
     </div>
   </div>
 
   <!-- ================= MAIN APP WORKSPACE ================= -->
+  <!-- YE AAPKA DUSRA SEPARATE PAGE HAI (SPA Logic) -->
   <div id="mainAppWrapper">
     <nav class="navbar glass-card">
       <div class="brand-logo">
@@ -785,13 +985,30 @@
     <div class="workspace-header">
       <h1>Generate Your Revisions</h1>
     </div>
+
     <div class="workspace-container">
+      <!-- PANEL 1: KNOWLEDGE SOURCE -->
       <div class="panel glass-card">
         <h2><i class="fa-solid fa-database" style="color: var(--accent-blue);"></i> 1. Knowledge Source</h2>
-        <label><strong>Upload Notes (PDF/Image):</strong></label><input type="file" id="fileInput" accept="image/*, application/pdf">
-        <div style="text-align: center; margin: 15px 0; color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase;">-- OR --</div>
-        <label><strong>Paste Text / Question:</strong></label><textarea id="textInput" placeholder="Paste topic or ask a question..."></textarea>
+
+        <label><strong>Upload Notes (PDF/Image):</strong></label>
+        <input type="file" id="fileInput" accept="image/*, application/pdf">
+        <div id="fileStatus" style="font-size:13px; font-weight:600; color:var(--accent-green); margin-top:-10px; margin-bottom:15px; word-break:break-all;"></div>
+
+        <div style="text-align: center; margin: 5px 0 15px; color: var(--text-muted); font-size: 11px; font-weight: 700;">-- OR --</div>
+
+        <label><strong>Paste Text / Question:</strong></label>
+        <textarea id="textInput" placeholder="Paste topic or ask a question..." style="min-height: 120px;"></textarea>
+
+        <!-- FOCUS AREA FEATURE -->
+        <div style="background: rgba(59, 130, 246, 0.05); padding: 15px; border-radius: 10px; border: 1px dashed var(--accent-blue); margin-top: 15px;">
+          <label style="color:var(--accent-blue); font-size:14px;"><i class="fa-solid fa-crosshairs"></i> <strong>Focus Area (Optional)</strong></label>
+          <p style="font-size:11px; color:var(--text-muted); margin:5px 0 10px;">Badi PDF daali hai? Yahan likho ki sirf kis Unit ya Topic ka notes chahiye taaki fast load ho.</p>
+          <input type="text" id="focusArea" placeholder="E.g., Only Unit 3, or Questions from Page 5" style="margin-bottom:0;">
+        </div>
       </div>
+
+      <!-- PANEL 2: CUSTOMIZE & GENERATE -->
       <div class="panel glass-card">
         <h2><i class="fa-solid fa-sliders" style="color: var(--accent-green);"></i> 2. Customise & Generate</h2>
         <label><strong>Detail Level:</strong></label>
@@ -800,80 +1017,81 @@
           <option value="standard" selected>Standard Exam Format</option>
           <option value="deep">Deep Dive</option>
         </select>
-        <label class="checkbox-group" for="magicTrick"><input type="checkbox" id="magicTrick"> 🪄 Add Memory Trick</label>
-        <label class="checkbox-group" for="examMode"><input type="checkbox" id="examMode" checked> 🎯 Exam-Oriented</label>
+
+        <div style="display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px;">
+          <label style="cursor:pointer;"><input type="checkbox" id="magicTrick" style="width:auto; margin:0 5px 0 0;"> 🪄 Memory Trick</label>
+          <label style="cursor:pointer;"><input type="checkbox" id="examMode" checked style="width:auto; margin:0 5px 0 0;"> 🎯 Exam-Oriented</label>
+        </div>
+
         <div class="btn-grid">
           <button class="btn-glass" onclick="generateAI('Revision Notes')"><i class="fa-solid fa-pen-nib"></i> Notes</button>
           <button class="btn-glass" onclick="generateAI('10 MCQs')"><i class="fa-solid fa-list-check"></i> MCQs</button>
           <button class="btn-glass" onclick="generateAI('Quick Summary')"><i class="fa-solid fa-bolt"></i> Summary</button>
           <button class="btn-glass" onclick="generateAI('Text-based Mindmap')"><i class="fa-solid fa-diagram-project"></i> Mindmap</button>
         </div>
+
         <h2 style="margin-top: 30px;"><i class="fa-solid fa-terminal" style="color: var(--text-muted);"></i> 3. Output</h2>
-        <div class="loader" id="loader"><i class="fa-solid fa-circle-notch fa-spin"></i> Analyzing...</div>
+        <div class="loader" id="loader"><i class="fa-solid fa-circle-notch fa-spin"></i> Analyzing your syllabus...</div>
         <div class="output-box" id="outputArea"></div>
-        <button class="btn-primary" style="background: var(--accent-green); color: #fff;" onclick="window.print()"><i class="fa-solid fa-download" style="margin-right: 8px;"></i> Save as PDF</button>
+        <button class="btn-primary" id="pdfBtn" style="background: var(--accent-green); color: #fff; display: none;" onclick="window.print()"><i class="fa-solid fa-download" style="margin-right:8px;"></i> Save as PDF</button>
       </div>
     </div>
   </div>
 
   <script>
+    // 🚨 APNI API YAHAN DAALO
     const API_URL = "https://ab-to-padh-le-api.aniket07r.workers.dev";
     let isAppPublic = true;
+    let quizDataStore = [];
+    let mindmapPanZoomInstance = null;
 
-    function toggleTheme() {
-      const html = document.documentElement;
-      const btns = document.querySelectorAll("#themeBtn, .navbar .btn-glass i.fa-sun, .navbar .btn-glass i.fa-moon");
-      if (html.getAttribute("data-theme") === "dark") {
-        html.setAttribute("data-theme", "light");
-        btns.forEach(b => {
-          if (b.tagName === 'I') {
-            b.className = 'fa-solid fa-moon';
-          } else {
-            b.innerHTML = '<i class="fa-solid fa-moon"></i>';
-          }
-        });
-      } else {
-        html.setAttribute("data-theme", "dark");
-        btns.forEach(b => {
-          if (b.tagName === 'I') {
-            b.className = 'fa-solid fa-sun';
-          } else {
-            b.innerHTML = '<i class="fa-solid fa-sun"></i>';
-          }
-        });
-      }
-    }
-
-    // ================= PAGE LOAD: FETCH PUBLIC DATA =================
+    // ================= INITIALIZATION & AUTO-LOGIN =================
     document.addEventListener("DOMContentLoaded", async () => {
+      const savedToken = localStorage.getItem("deviceToken");
+      const savedUserId = localStorage.getItem("userId");
+      const savedUserName = localStorage.getItem("userName");
+
       try {
         const response = await fetch(`${API_URL}/status`);
         const data = await response.json();
         isAppPublic = data.isPublicMode;
-      } catch (e) {}
-      loadSiteContent();
+      } catch (e) {
+        console.log("Status fetch failed");
+      }
+
+      if (!isAppPublic && savedToken && savedUserId) {
+        showMainApp(savedUserName);
+      } else {
+        document.getElementById("fullScreenLoader").style.display = "none";
+        document.getElementById("landingPage").style.display = "block";
+        loadSiteContent();
+      }
     });
 
+    function toggleTheme() {
+      const html = document.documentElement;
+      const newTheme = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      html.setAttribute("data-theme", newTheme);
+      document.querySelectorAll(".fa-sun, .fa-moon").forEach(icon => {
+        icon.className = newTheme === "dark" ? "fa-solid fa-sun" : "fa-solid fa-moon";
+      });
+    }
+
+    // ================= LANDING PAGE & SITE CONTENT =================
     async function loadSiteContent() {
       try {
         const res = await fetch(`${API_URL}/site-content`);
         const data = await res.json();
 
-        // Function ke start mein ye add kar do
         if (data.notices && data.notices.length > 0) {
           const ticker = document.getElementById('tickerContainer');
-          // Static wale (isSticky) alag aur Scrolling wale alag
-          const staticNotices = data.notices.filter(n => n.isSticky);
           const scrollNotices = data.notices.filter(n => !n.isSticky);
-
-          // Static walo ko div mein dikhao
-          // Scrolling walo ko marquee mein
-          if (ticker) {
+          if (ticker && scrollNotices.length > 0) {
             ticker.innerHTML = scrollNotices.map(n => `<span>• ${n.text}</span>`).join(' &nbsp;&nbsp;&nbsp; ');
+            document.getElementById('tickerWrapper').style.display = 'flex';
           }
         }
 
-        // 2. STATIC AD BANNER
         if (data.ad && data.ad.isActive) {
           const adBanner = document.getElementById('adBanner');
           document.getElementById('adBannerText').innerText = data.ad.text || "Announcement!";
@@ -885,58 +1103,57 @@
           if (data.ad.link) {
             const link = document.getElementById('adBannerLink');
             link.href = data.ad.link;
-            link.style.display = 'inline-block';
+            link.style.display = 'inline-flex';
           }
           adBanner.style.display = 'flex';
         }
 
-        // 3. RENDER REVIEWS
         if (data.reviews && data.reviews.length > 0) {
           document.getElementById('reviewsSection').style.display = 'block';
           const container = document.getElementById('reviewsContainer');
           let html = '';
-          data.reviews.reverse().slice(0, 10).forEach((r, index) => {
-
-            const id = `rev-${index}`;
+          data.reviews.reverse().slice(0, 10).forEach((r, idx) => {
+            const id = `rev-${idx}`;
             html += `<div class="glass-card review-card">
-     <div class="stars">${'⭐'.repeat(r.rating)}</div>
-     <div class="review-text" id="${id}">${r.text}</div>
-     <button class="read-more-btn" id="btn-${id}" onclick="toggleText('${id}')">Read More</button>
-     <div class="review-author"><i class="fa-solid fa-user" style="margin-right:5px;"></i> ${r.name}</div>
-   </div>`;
-
-
+             <div class="stars">${'⭐'.repeat(r.rating)}</div>
+             <div class="review-text" id="${id}">${r.text}</div>
+             <button class="read-more-btn" id="btn-${id}" onclick="toggleText('${id}')">Read More</button>
+             <div class="review-author"><i class="fa-solid fa-user"></i> ${r.name}</div>
+           </div>`;
           });
           container.innerHTML = html;
-
-          // Check if text needs "Read More" button
           setTimeout(() => {
             document.querySelectorAll('.review-text').forEach(el => {
-              if (el.scrollHeight > el.clientHeight) {
-                const btn = document.getElementById('btn-' + el.id);
-                if (btn) btn.style.display = 'block';
-              }
+              if (el.scrollHeight > el.clientHeight) document.getElementById('btn-' + el.id).style.display = 'block';
             });
           }, 100);
         }
       } catch (e) {
-        console.log("Failed to load site content");
+        console.log("Site content load error");
       }
     }
-    // ================= SMART REVIEW SUBMISSION =================
-    async function submitReview() {
-      const name = document.getElementById('revName').value.trim() || "Anonymous";
-      const text = document.getElementById('revText').value.trim();
-      const rating = document.querySelector('input[name="rating"]:checked').value;
-      const msgDiv = document.getElementById('revMsg');
-      const btn = document.getElementById('btnRev');
 
+    function toggleText(id) {
+      const el = document.getElementById(id);
+      const btn = document.getElementById('btn-' + id);
+      el.classList.toggle('expanded');
+      btn.innerText = el.classList.contains('expanded') ? 'Show Less' : 'Read More';
+    }
+
+    // Forms Logic
+    async function submitReview() {
+      const rating = document.querySelector('input[name="rating"]:checked').value;
+      const name = document.getElementById("revName").value;
+      const text = document.getElementById("revText").value;
       if (!text) {
-        msgDiv.innerHTML = `<span class="text-danger">Please write something first!</span>`;
+        const revMsg = document.getElementById("revMsg");
+        revMsg.innerText = "Please write a review.";
+        revMsg.style.color = "var(--warning)";
         return;
       }
 
-      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sending...`;
+      const btn = document.getElementById("btnRev");
+      btn.innerHTML = "Submitting...";
       btn.disabled = true;
       try {
         const res = await fetch(`${API_URL}/submit-review`, {
@@ -946,45 +1163,40 @@
           },
           body: JSON.stringify({
             name,
-            text,
-            rating
+            rating,
+            text
           })
         });
         const data = await res.json();
-
-        if (res.ok && data.success) {
-          if (data.isFlagged) {
-            msgDiv.innerHTML = `<span style="color: var(--warning);"><i class="fa-solid fa-triangle-exclamation"></i> ${data.message}</span>`;
-          } else {
-            msgDiv.innerHTML = `<span class="text-success"><i class="fa-solid fa-check"></i> ${data.message}</span>`;
-            loadSiteContent(); // Instantly refresh the Wall of Love!
-          }
-          document.getElementById('revText').value = "";
-          document.getElementById('revName').value = "";
-        } else throw new Error();
-      } catch (e) {
-        msgDiv.innerHTML = `<span class="text-danger">Failed to send. Try again.</span>`;
-      } finally {
-        btn.innerHTML = "Submit Review";
-        btn.disabled = false;
-        setTimeout(() => msgDiv.innerHTML = "", 6000);
+        document.getElementById("revMsg").innerText = data.message;
+        document.getElementById("revMsg").style.color = data.isFlagged ? "var(--warning)" : "var(--accent-green)";
+        if (data.success) {
+          document.getElementById("revName").value = "";
+          document.getElementById("revText").value = "";
+        }
+      } catch (err) {
+        document.getElementById("revMsg").innerText = "Failed to submit.";
       }
+      btn.innerHTML = "Submit Review";
+      btn.disabled = false;
     }
 
     async function submitMessage() {
-      const name = document.getElementById('msgName').value.trim();
-      const contact = document.getElementById('msgContact').value.trim();
-      const text = document.getElementById('msgText').value.trim();
-      const msgDiv = document.getElementById('msgStatus');
-      const btn = document.getElementById('btnMsg');
-      if (!name || !text) {
-        msgDiv.innerHTML = `<span class="text-danger">Name and message are required!</span>`;
+      const name = document.getElementById("msgName").value;
+      const contact = document.getElementById("msgContact").value;
+      const text = document.getElementById("msgText").value;
+      if (!text || !name) {
+        const msgStatus = document.getElementById("msgStatus");
+        msgStatus.innerText = "Please enter name and message.";
+        msgStatus.style.color = "var(--warning)";
         return;
       }
-      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sending...`;
+
+      const btn = document.getElementById("btnMsg");
+      btn.innerHTML = "Sending...";
       btn.disabled = true;
       try {
-        const res = await fetch(`${API_URL}/submit-message`, {
+        await fetch(`${API_URL}/submit-message`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -995,34 +1207,22 @@
             text
           })
         });
-        if (res.ok) {
-          msgDiv.innerHTML = `<span class="text-success"><i class="fa-solid fa-check"></i> Message sent successfully!</span>`;
-          document.getElementById('msgName').value = "";
-          document.getElementById('msgContact').value = "";
-          document.getElementById('msgText').value = "";
-        } else throw new Error();
-      } catch (e) {
-        msgDiv.innerHTML = `<span class="text-danger">Failed to send. Try again.</span>`;
-      } finally {
-        btn.innerHTML = "Send Message";
-        btn.disabled = false;
-        setTimeout(() => msgDiv.innerHTML = "", 4000);
+        document.getElementById("msgStatus").innerText = "Message sent successfully!";
+        document.getElementById("msgStatus").style.color = "var(--accent-green)";
+        document.getElementById("msgName").value = "";
+        document.getElementById("msgContact").value = "";
+        document.getElementById("msgText").value = "";
+      } catch (err) {
+        document.getElementById("msgStatus").innerText = "Failed to send message.";
       }
+      btn.innerHTML = "Send Message";
+      btn.disabled = false;
     }
 
-    // ================= WORKSPACE ENTRY & LOGIN LOGIC =================
+    // ================= LOGIN & WORKSPACE ENTRY =================
     function handleEnterWorkspace() {
-      if (isAppPublic) {
-        showMainApp("Guest");
-      } else {
-        const savedToken = localStorage.getItem("deviceToken");
-        const savedUserId = localStorage.getItem("userId");
-        if (savedToken && savedUserId) {
-          showMainApp(localStorage.getItem("userName"));
-        } else {
-          openLoginModal();
-        }
-      }
+      if (isAppPublic) showMainApp("Guest");
+      else openLoginModal();
     }
 
     function openLoginModal() {
@@ -1046,6 +1246,7 @@
     }
 
     function showMainApp(name) {
+      document.getElementById("fullScreenLoader").style.display = "none";
       document.getElementById("landingPage").style.display = "none";
       document.getElementById("loginModalOverlay").style.display = "none";
       document.getElementById("mainAppWrapper").style.display = "block";
@@ -1058,14 +1259,17 @@
       const password = document.getElementById("userPassInput").value.trim();
       const errorDiv = document.getElementById("loginError");
       const btn = document.getElementById("loginBtn");
+
       if (!userId || !password) {
         errorDiv.innerText = "Please enter both details.";
         errorDiv.style.display = "block";
         return;
       }
+
       btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Verifying...`;
       btn.disabled = true;
       errorDiv.style.display = "none";
+
       try {
         const response = await fetch(`${API_URL}/login`, {
           method: "POST",
@@ -1073,8 +1277,8 @@
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            userId: userId,
-            password: password,
+            userId,
+            password,
             deviceToken: localStorage.getItem("deviceToken") || ""
           })
         });
@@ -1118,9 +1322,18 @@
       window.location.reload();
     }
 
-    // ================= AI GENERATION LOGIC =================
+    // ================= AI WORKSPACE LOGIC =================
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+      const statusDiv = document.getElementById('fileStatus');
+      if (e.target.files[0]) {
+        statusDiv.innerHTML = `<i class="fa-solid fa-file-circle-check"></i> Document Attached: ${e.target.files[0].name}`;
+      } else {
+        statusDiv.innerHTML = "";
+      }
+    });
+
     let loaderInterval;
-    const loaderMsgs = ["Reading syllabus...", "Extracting concepts...", "Formatting for exams..."];
+    const loaderMsgs = ["Scanning Document...", "Extracting Key Concepts...", "Formatting for Exams...", "Preparing output..."];
 
     function startLoader() {
       let i = 0;
@@ -1134,15 +1347,26 @@
     async function generateAI(formatType) {
       const textInput = document.getElementById('textInput').value;
       const fileInput = document.getElementById('fileInput').files[0];
+      const focusArea = document.getElementById('focusArea').value;
+      const outputArea = document.getElementById('outputArea');
+
       if (!textInput.trim() && !fileInput) {
-        alert("Provide some text or file!");
+        outputArea.innerHTML = `<div style="color:var(--danger); background:rgba(239, 68, 68, 0.1); padding:15px; border-radius:10px;">❌ Bhai, pehle thoda text paste karo ya file upload karo!</div>`;
+        outputArea.style.display = 'block';
         return;
       }
-      const outputArea = document.getElementById('outputArea');
+
+      if (mindmapPanZoomInstance) {
+        mindmapPanZoomInstance.destroy();
+        mindmapPanZoomInstance = null;
+      }
+
       const loader = document.getElementById('loader');
       outputArea.style.display = 'none';
+      document.getElementById('pdfBtn').style.display = 'none';
       loader.style.display = "block";
       startLoader();
+
       const formData = new FormData();
       if (textInput) formData.append('text', textInput);
       if (fileInput) formData.append('file', fileInput);
@@ -1150,39 +1374,112 @@
       formData.append('detailLevel', document.getElementById('detailLevel').value);
       formData.append('magicTrick', document.getElementById('magicTrick').checked);
       formData.append('examMode', document.getElementById('examMode').checked);
+      if (focusArea) formData.append('focusArea', focusArea);
       formData.append('userId', localStorage.getItem("userId") || "guest");
       formData.append('deviceToken', localStorage.getItem("deviceToken") || "guest_token");
+
+      let cleanMermaid = "";
+
       try {
         const response = await fetch(`${API_URL}/generate`, {
           method: 'POST',
           body: formData
         });
-        if (response.status === 401 || response.status === 403) {
+
+        if (!response.ok) {
           const errData = await response.json();
-          throw new Error(errData.error || "Session Expired.");
+          throw new Error(errData.error || "Server timeout or error.");
         }
+
         const data = await response.json();
-        if (!response.ok) throw new Error(data.error || "Server Error");
         let html = `<h3 style="color:var(--text-main); margin-top:0;">${formatType}</h3><hr style="border:0; border-top:1px solid var(--glass-border); margin:15px 0;">`;
-        if (formatType === '10 MCQs' && Array.isArray(data.questions)) {
-          html += `<div class="ai-content"><i>MCQ UI active...</i></div>`;
+
+        if (formatType === 'Text-based Mindmap') {
+          let match = (data.aiResponse || "").match(/```(?:mermaid)?\s*([\s\S]*?)```/i);
+          cleanMermaid = match ? match[1].trim() : (data.aiResponse || "").trim();
+          cleanMermaid = cleanMermaid.replace(/```mermaid/gi, "").replace(/```/g, "").trim();
+
+          let startIndex = cleanMermaid.search(/^(graph|mindmap|pie|sequenceDiagram|classDiagram|stateDiagram|gantt|info|journey|requirementDiagram)/im);
+          if (startIndex !== -1) {
+            cleanMermaid = cleanMermaid.substring(startIndex);
+          }
+
+          let safeRawText = cleanMermaid.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+          html += `<div class="ai-content">
+                <div id="mermaidFallbackMsg" style="display:none; color:var(--warning); background:rgba(245, 158, 11, 0.1); padding:10px; border-radius:8px; margin-bottom:15px; font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> AI generated a complex structure that couldn't be drawn perfectly. Here is the raw layout:</div>
+                
+                <div style="font-size: 11px; color: var(--accent-blue); text-align: center; margin-bottom: 8px;"><i class="fa-solid fa-magnifying-glass-plus"></i> Hint: You can drag to pan and scroll to zoom in/out!</div>
+                <div id="mermaidDiagram">
+                   <div style="text-align:center; padding: 20px;"><i class="fa-solid fa-circle-notch fa-spin"></i> Drawing Mindmap...</div>
+                </div>
+                
+                <pre id="mermaidRawText" style="display:none; background:var(--input-bg); padding:15px; border-radius:8px; border:1px solid var(--glass-border); overflow-x:auto; font-size:13px; color:var(--text-main); white-space: pre-wrap;">${safeRawText}</pre>
+            </div>`;
+        } else if (formatType === '10 MCQs') {
+          quizDataStore = data.questions || data;
+          html += renderQuizUI(quizDataStore);
         } else {
-          html += `<div class="ai-content">${marked.parse(data.aiResponse || data.text || JSON.stringify(data))}</div>`;
+          html += `<div class="ai-content">${marked.parse(data.aiResponse || data.text || "")}</div>`;
         }
+
         html += `<div style="text-align:center; font-size:12px; color:var(--text-muted); margin-top:30px; border-top:1px dashed var(--glass-border); padding-top:15px;">Generated via <strong>Ab To Padh Le</strong> 🚀 <br><span style="font-size:10px; opacity:0.8; margin-top:4px; display:inline-block;">Developed by <strong>Aniket Kewat</strong></span></div>`;
+
         outputArea.innerHTML = html;
+        document.getElementById('pdfBtn').style.display = 'inline-flex';
+
+        clearInterval(loaderInterval);
+        loader.style.display = 'none';
+        outputArea.style.display = 'block';
+
+        if (formatType === 'Text-based Mindmap' && cleanMermaid) {
+          try {
+            const uniqueId = 'mermaid-svg-' + Date.now();
+            const {
+              svg
+            } = await mermaid.render(uniqueId, cleanMermaid);
+            const diagramContainer = document.getElementById('mermaidDiagram');
+            diagramContainer.innerHTML = svg;
+
+            setTimeout(() => {
+              const svgElement = diagramContainer.querySelector('svg');
+              if (svgElement) {
+                svgElement.style.width = "100%";
+                svgElement.style.height = "100%";
+                svgElement.style.maxWidth = "none";
+
+                mindmapPanZoomInstance = svgPanZoom(svgElement, {
+                  zoomEnabled: true,
+                  controlIconsEnabled: true,
+                  fit: true,
+                  center: true,
+                  minZoom: 0.1,
+                  maxZoom: 10
+                });
+              }
+            }, 100);
+
+          } catch (mermaidError) {
+            console.error("Mermaid Render Error:", mermaidError);
+            document.getElementById('mermaidDiagram').style.display = 'none';
+            document.getElementById('mermaidFallbackMsg').style.display = 'block';
+            document.getElementById('mermaidRawText').style.display = 'block';
+          }
+        }
+
       } catch (err) {
-        outputArea.innerHTML = `<div style="color:var(--danger); background:rgba(239, 68, 68, 0.1); padding:15px; border-radius:10px;">❌ ${err.message}</div>`;
-        if (err.message.includes("Session Expired") || err.message.includes("Unauthorized access")) {
-          setTimeout(() => {
-            logoutApp();
-          }, 2500);
+        outputArea.innerHTML = `<div style="color:var(--danger); background:rgba(239, 68, 68, 0.1); padding:15px; border-radius:10px;">❌ Error: ${err.message}</div>`;
+
+        if (err.message.includes("Session Expired") || err.message.includes("Unauthorized")) {
+          setTimeout(() => logoutApp(), 2500);
         }
       } finally {
         clearInterval(loaderInterval);
         loader.style.display = 'none';
         outputArea.style.display = 'block';
+
         if (window.MathJax) MathJax.typesetPromise([outputArea]).catch(e => console.log(e));
+
         if (window.innerWidth < 768) {
           outputArea.scrollIntoView({
             behavior: 'smooth',
@@ -1192,11 +1489,68 @@
       }
     }
 
-    function toggleText(id) {
-      const el = document.getElementById(id);
-      const btn = document.getElementById('btn-' + id);
-      el.classList.toggle('expanded');
-      btn.innerText = el.classList.contains('expanded') ? 'Show Less' : 'Read More';
+    // ================= MCQ INTERACTIVE QUIZ ENGINE =================
+    let userAnswers = {};
+
+    function renderQuizUI(questionsArray) {
+      userAnswers = {};
+      if (!Array.isArray(questionsArray)) return "Error: Invalid quiz format received.";
+
+      let html = `<div>`;
+      questionsArray.forEach((q, qIndex) => {
+        html += `
+            <div class="quiz-card" id="qCard-${qIndex}">
+                <div class="quiz-question">Q${qIndex + 1}. ${q.question}</div>
+                <div>`;
+
+        q.options.forEach((opt, optIndex) => {
+          html += `<button class="quiz-opt-btn" id="btn-${qIndex}-${optIndex}" onclick="selectOption(${qIndex}, ${optIndex})">${String.fromCharCode(65 + optIndex)}. ${opt}</button>`;
+        });
+
+        html += `</div></div>`;
+      });
+
+      html += `<button class="btn-primary" id="submitQuizBtn" onclick="submitQuiz()" style="margin-top:20px;">Submit Test</button>`;
+      html += `<div class="score-board" id="finalScoreBoard"></div>`;
+      html += `</div>`;
+      return html;
+    }
+
+    function selectOption(qIndex, optIndex) {
+      userAnswers[qIndex] = optIndex;
+      for (let i = 0; i < 4; i++) {
+        let btn = document.getElementById(`btn-${qIndex}-${i}`);
+        if (btn) btn.classList.remove('selected');
+      }
+      document.getElementById(`btn-${qIndex}-${optIndex}`).classList.add('selected');
+    }
+
+    function submitQuiz() {
+      let score = 0;
+      let total = quizDataStore.length;
+
+      quizDataStore.forEach((q, qIndex) => {
+        let correctOpt = q.answer;
+        let userOpt = userAnswers[qIndex];
+
+        for (let i = 0; i < 4; i++) {
+          let btn = document.getElementById(`btn-${qIndex}-${i}`);
+          if (btn) {
+            btn.disabled = true;
+            if (i === correctOpt) btn.classList.add('correct');
+            if (userOpt !== undefined && i === userOpt && userOpt !== correctOpt) {
+              btn.classList.add('wrong');
+            }
+          }
+        }
+
+        if (userOpt === correctOpt) score++;
+      });
+
+      document.getElementById('submitQuizBtn').style.display = 'none';
+      const scoreBoard = document.getElementById('finalScoreBoard');
+      scoreBoard.innerHTML = `Your Score: ${score} / ${total}`;
+      scoreBoard.style.display = 'block';
     }
   </script>
 </body>
