@@ -1,5 +1,8 @@
-import adminHandler from './admin.js';
+// worker/index.js
 import authHandler from './auth.js';
+import adminHandler from './admin.js';
+import { handleGenerate } from './handlers/generate.js'; // Connection 1
+import { handleMCQ } from './handlers/mcq.js';           // Connection 2
 
 // BUG FIX 2: Smart Auto-Retry Function (Exponential Backoff)
 async function fetchWithRetry(url, options, maxRetries = 3) {

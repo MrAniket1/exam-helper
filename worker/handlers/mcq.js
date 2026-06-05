@@ -31,17 +31,10 @@ export async function handleMCQ(request, env, corsHeaders) {
 
     // Language ko prompt me add kiya gaya hai
     promptInstruction += ` Generate exactly 10 multiple choice questions in strict JSON format. 
-    The response must ONLY be the JSON array, no markdown blocks, no intro text.
-    Format:
-    [
-      {
-        "question": "Question text here?",
-        "options": ["Option A", "Option B", "Option C", "Option D"],
-        "answer": 0,
-        "explanation": "A short, crisp 1-2 sentence explanation of WHY this is the correct answer." 
-      }
-    ]
-    Note: "answer" must be the integer index (0-3) of the correct option.
+    RESPONSE RULES:
+    1. Output MUST be a valid JSON array. 
+    2. Do NOT wrap in markdown, no backticks, no text before or after JSON.
+    3. Every object MUST have "question", "options" (array of 4 strings), "answer" (integer 0-3), and "explanation" (string).
     
     CRITICAL LANGUAGE INSTRUCTION: The questions, options, and explanations MUST be generated in ${language} language.`;
 
