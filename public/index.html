@@ -1014,6 +1014,12 @@
           <option value="standard" selected>Standard Exam Format</option>
           <option value="deep">Deep Dive</option>
         </select>
+        <label><strong>Output Language:</strong></label>
+        <select id="outputLanguage">
+          <option value="English" selected>English</option>
+          <option value="Hindi (Devanagari script)">Pure Hindi (हिंदी)</option>
+          <option value="Hinglish (Hindi words written in English alphabet)">Hinglish</option>
+        </select>
 
         <div style="display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px;">
           <label style="cursor:pointer;"><input type="checkbox" id="magicTrick" style="width:auto; margin:0 5px 0 0;"> 🪄 Memory Trick</label>
@@ -1554,6 +1560,19 @@
         }
 
         if (userOpt === correctOpt) score++;
+        if (q.explanation) {
+          let expDiv = document.createElement('div');
+          expDiv.style.marginTop = "12px";
+          expDiv.style.padding = "10px 15px";
+          expDiv.style.backgroundColor = "rgba(59, 130, 246, 0.1)"; // Light glass blue
+          expDiv.style.borderLeft = "4px solid var(--accent-blue)";
+          expDiv.style.borderRadius = "0 8px 8px 0";
+          expDiv.style.fontSize = "13px";
+          expDiv.style.color = "var(--text-main)";
+          expDiv.innerHTML = `<strong style="color: var(--accent-blue);"><i class="fa-solid fa-lightbulb"></i> Explanation:</strong> <span style="opacity: 0.9;">${q.explanation}</span>`;
+
+          document.getElementById(`qCard-${qIndex}`).appendChild(expDiv);
+        }
       });
 
       document.getElementById('submitQuizBtn').style.display = 'none';
